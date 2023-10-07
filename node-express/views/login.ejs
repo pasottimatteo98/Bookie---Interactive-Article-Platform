@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="it" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Matteo Pasotti">
+  <title>Bookie</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/signin.css" rel="stylesheet">
+</head>
+
+<body id="signin" class="text-center">
+  <main class="form-signin">
+    <div id="login">
+      <h1 class="h3 mb-3 fw-normal">Login</h1>
+      <div id="error"></div>
+      <div class="form-floating">
+        <input type="email" class="form-control" id="Email" name="email">
+        <label for="Email">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="Password" name="password">
+        <label for="Password">Password</label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary submit">Accedi</button>
+    </div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    $("#login .submit").on("click", function () {
+      axios.post('/auth', {
+        email: $("#Email").val(),
+        password: $("#Password").val()
+      })
+        .then(function (response) {
+          if (response.data.authorize == true) {
+            window.location.replace("/");
+          }
+        })
+        .catch(function (error) {
+          if (error.response.status == 401) {
+            $("#error").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+          }
+        })
+    })
+  </script>
+</body>
+
+</html>

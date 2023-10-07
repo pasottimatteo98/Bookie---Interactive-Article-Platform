@@ -1,0 +1,39 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main id="profile" class="container mt-4">
+      <div class="row">
+        <%- include('components/profile_sidebar.ejs'); %>
+          <div class="col-12 col-md-8">
+            <div class="row">
+              <div class="col-12 text-center">
+                <img class="user_icon" src="img/user_icon.png" alt="user icon">
+                <p>
+                  <%= user[0].Nome+" "+user[0].Cognome %></p>
+            </div>
+          </div>
+          <div class=" col-12">
+                    <div class="row bg-gradient rounded pt-4 pb-2">
+                      <div class="col-md-6 text-center">
+                        <p class="text-white"><i class="fas fa-map-marker-alt"></i>
+                          <%= user[0].Indirizzo+", "+user[0].citta+" , "+user[0].provincia+" , "+user[0].cap %></p>
+              </div>
+              <div class=" col-md-6 text-center">
+                            <p class="text-white"><i class="fas fa-phone-alt"></i>
+                              <%= user[0].NumeroTel %>
+                            </p>
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+
+    </main>
+    <footer class="footer mt-auto bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+    </html>

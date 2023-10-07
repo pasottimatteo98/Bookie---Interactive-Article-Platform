@@ -1,0 +1,131 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main class="container">
+      <div class="py-5 text-center">
+        <h2>Checkout form</h2>
+      </div>
+      <div id="error"></div>
+
+      <div class="row g-5">
+        <div class="col-md-5 col-lg-4 order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-primary">Your cart</span>
+            <span class="badge bg-primary rounded-pill">1</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">
+                  <%= episode[0].Titolo %>
+                </h6>
+                <small class="text-muted">
+                  <%= episode[0].Descrizione %>
+                </small>
+              </div>
+              <span class="text-muted">&euro;<%= episode[0].Prezzo %></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (EUR)</span>
+              <strong>&euro; <%= episode[0].Prezzo %></strong>
+            </li>
+          </ul>
+        </div>
+        <div id="checkout" class="col-md-7 col-lg-8">
+          <h4 class="mb-3">Pagamento</h4>
+
+          <div class="my-3">
+            <div class="form-check">
+              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" value="1" checked required>
+              <label class="form-check-label" for="credit">Carta di credito</label>
+            </div>
+            <div class="form-check">
+              <input id="debit" name="paymentMethod" type="radio" class="form-check-input" value="2" required>
+              <label class="form-check-label" for="debit">Carta di debito</label>
+            </div>
+          </div>
+
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <label for="cc-name" class="form-label">Nome sulla carta</label>
+              <input type="text" class="form-control" id="cc-name" placeholder="" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="cc-number" class="form-label">Numero carta</label>
+              <input type="text" class="form-control" id="cc-number" placeholder="" required>
+            </div>
+
+            <div class="col-md-3">
+              <label for="cc-expiration" class="form-label">Data scadenza</label>
+              <input type="text" class="form-control" id="cc-expiration" required>
+            </div>
+
+            <div class="col-md-3">
+              <label for="cc-ccv" class="form-label">CVV</label>
+              <input type="text" class="form-control" id="cc-ccv" placeholder="" required>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <button class="w-100 btn btn-primary btn-lg submit">Paga</button>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      $("#checkout .submit").on("click", function () {
+        let credito_name = $("#cc-name").val();
+        let credito_expiration = $("#cc-expiration").val();
+        let credito_number = $("#cc-number").val();
+        let credito_ccv = $("#cc-ccv").val();
+        if ((credito_ccv === "") || (credito_name === "") || (credito_expiration === "") || (credito_number === "")) {
+          $("#error").html('<div class="alert alert-danger" role="alert">Riempire Tutti i Campi.</div>');
+          return;
+        }
+        if ((credito_number.length != 16)) {
+          $("#error").html('<div class="alert alert-danger" role="alert">Dati della Carta non Validi.</div>');
+          return;
+        }
+        if ((credito_expiration.length != 5)) {
+          $("#error").html('<div class="alert alert-danger" role="alert">Data della carta non Valida.</div>');
+          return;
+        }
+        if (credito_ccv.length != 3) {
+          $("#error").html('<div class="alert alert-danger" role="alert">Dati della Carta non Validi.</div>');
+          return;
+        }
+        console.log(credito_name)
+
+        axios.post('/checkout', {
+          product_id: <%= episode[0].ID %>,
+          credit_type: $("input:radio:checked").val(),
+          credit_name: $("#cc-name").val(),
+          credit_number: $("#cc-number").val(),
+          credit_expiration: $("#cc-expiration").val(),
+          credit_ccv: $("#cc-ccv").val(),
+        })
+          .then(function (response) {
+            if (response.status) {
+              window.location.replace("/order_success/<%= episode[0].ID %>");
+            }
+          })
+          .catch(function (error) {
+            if (error.response.status == 500) {
+              $("#error").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+            }
+          })
+      })
+    </script>
+    </body>
+
+    </html>

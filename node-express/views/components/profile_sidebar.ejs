@@ -1,0 +1,15 @@
+<div class="col-12 col-md-4">
+  <ul class="list-group">
+    <li class="list-group-item <%- (title == 'profile' ) ? 'active' : '' %>"><a href="/profile">Profile</a></li>
+    <li class="list-group-item <%- (title == 'favorite' ) ? 'active' : '' %>"><a href="/favorite">Favorite</a></li>
+    <li class="list-group-item <%- (title == 'followed' ) ? 'active' : '' %>"><a href="/followed">Followed</a></li>
+    <li class="list-group-item <%- (title == 'payments' ) ? 'active' : '' %>"><a href="/payments">Payments</a></li>
+    <% if(session.user.level==1) { %>
+      <li class="list-group-item <%- (title == 'my_articles' ) ? 'active' : '' %>"><a href="/my_articles">I miei
+          articoli</a></li>
+      <li class="list-group-item <%- (title == 'my_episodes' ) ? 'active' : '' %>"><a href="/my_episodes">I miei
+          episodi</a></li>
+      <% } %>
+        <li class="list-group-item"><a href="/logout">Logout</a></li>
+  </ul>
+</div>

@@ -1,0 +1,127 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main>
+      <section id="jumbotron"
+        class="py-5 text-center d-flex align-items-center justify-content-center container-fluid border-gradient">
+        <div class="row py-lg-5">
+          <div class="col-12 mx-auto">
+            <h1 class="text-white">
+              <%= episodio.Titolo %>
+            </h1>
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <p>
+                    <%= episodio.Descrizione %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+      <div id="episode" class="container mt-4">
+        <div class="row">
+          <div id="message"></div>
+          <div class="col-12 col-md-9">
+            <p>
+              <%= episodio.Testo %>
+            </p>
+          </div>
+          <div class="col-12 col-md-3 border-start">
+            <p><em>
+                <%= episodio.Sponsor %>
+              </em></p>
+            <p><em>
+                <%= episodio.Data %>
+              </em></p>
+          </div>
+        </div>
+        <div class="comments row">
+          <div class="col-12 col-md-8">
+            <h4>Commenti</h4>
+            <% if(session.user) {%>
+              <textarea class="form-control" id="Commento" rows="3"></textarea>
+              <button class="btn submit mt-2">Invia</button>
+              <% } %>
+          </div>
+          <div class="row d-flex mt-4">
+            <div class="col-md-8">
+              <% for(var i=0; i < commenti.length; i++) { %>
+                <div class="card p-3 mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="user d-flex flex-row align-items-center">
+                      <span>
+                        <small class="font-weight-bold text-primary">
+                          <%= commenti[i].Nome+" "+commenti[i].Cognome %></small><br>
+                                <small class=" font-weight-bold">
+                            <%= commenti[i].Testo %>
+                        </small>
+                      </span>
+
+                    </div>
+                    <div class="text-end">
+                      <% if((session.user)&&(session.user.id==commenti[i].Account_ID)) { %>
+                        <button onclick="delete_comments(<%= commenti[i].ID %>)" class="btn btf">Elimina</button>
+                        <% } %>
+                          <small>
+                            <%= commenti[i].Data %>
+                          </small>
+                    </div>
+
+
+                    <% } %>
+                  </div>
+                </div>
+            </div>
+          </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      function delete_comments(id) {
+        console.log(id);
+        axios.delete('/comments/' + id)
+          .then(function (response) {
+            if (response.data.status == true) {
+              $("#message").html('<div class="alert alert-success" role="alert">Commento Eliminato con successo</div>');
+              setTimeout(function () {
+                window.location.reload(true);
+              }, 1000);
+            }
+          })
+          .catch(function (error) {
+            if (error.response.status == 500) {
+              $("#message").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+            }
+          })
+      }
+    </script>
+    <script>
+      $(".comments .submit").on("click", function () {
+        axios.post('/comment', {
+          comment: $("#Commento").val(),
+          episode_id: <%= episodio.ID %>
+          })
+          .then(function (response) {
+            if (response.data.status) {
+              window.location.reload(true);
+            }
+          })
+          .catch(function (error) {
+            if (error.response.status == 500) {
+              $("#error").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+            }
+          })
+      })
+    </script>
+
+    </body>
+
+    </html>

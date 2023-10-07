@@ -1,0 +1,107 @@
+.bg-gradient-purple{
+    background: -webkit-linear-gradient(#8BC6EC, #9599E2);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.bg-gradient{
+    background-color: #8BC6EC;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+}
+#jumbotron{
+    background:linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://picsum.photos/2000/200/?blur");
+    background-position: center;
+    background-size: cover;
+    height: 400px;
+}
+
+.border-gradient{
+    border-image-source: linear-gradient(to left, #8BC6EC, #9599E2);
+}
+
+.card .card-body{
+    border-bottom: 3px solid;
+    border-image-slice: 1;
+}
+
+.card .card-body .btn,
+#jumbotron .btn,
+.btn{
+    background-color: #8BC6EC;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+    color: #fff;
+}
+
+#jumbotron p{
+    color: #fff;
+}
+
+.card-image{
+    position: relative;
+}
+.card-image .fas.fa-star {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: rgb(218, 215, 38);
+}
+.card-image .fas.fa-star:hover {
+    color: #8BC6EC;
+}
+
+.list-group-item a{
+    color: black;
+    text-decoration: none;
+}
+.list-group-item.active a{
+    color: #fff;
+    text-decoration: none;
+}
+.list-group-item.active{
+    background-color: #8BC6EC;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+    border:none;
+}
+
+#profile .user_icon{
+    width:150px;
+    height: auto;
+}
+
+@media only screen and (max-width: 576px) {
+    #jumbotron{
+        height: 400px;
+    }
+}
+
+.card-img-top{
+    height: 170px;
+    width:100%;
+}
+
+.card-img-top2{
+    height: 200px;
+}
+
+.btf{
+    background-color: #ffffff;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+    border-color: #ffffff;
+    color: #fff;
+    position:relative;
+}
+
+.favorite_star{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: rgb(218, 215, 38);
+}
+
+.favorite_star:hover{
+    color: #8BC6EC;
+}
+
+body{
+    font-family: cursive;
+}

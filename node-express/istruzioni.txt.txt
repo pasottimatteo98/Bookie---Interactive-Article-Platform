@@ -1,0 +1,19 @@
+Credenziali:
+
+scrittore@example.com
+scrittore123
+
+lettore@example.com
+lettore123
+
+scrittore21@example.com
+scrittore123
+
+-------------------------------------
+
+Le Stella Gialla permette l'aggiunta ai preferiti/seguiti dell'utente.
+La creazione di Articoli ed Episodi è nel suo profilo
+
+Gli errori su VS degli Ejs sono dovuti alla correzione imposta da HTML sul formato Ejs. (Problema di VS)
+
+https://github.com/microsoft/vscode/issues/51118

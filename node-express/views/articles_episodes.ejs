@@ -1,0 +1,58 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main>
+      <section id="jumbotron"
+        class="py-5 text-center d-flex align-items-center justify-content-center container-fluid border-gradient">
+        <div class="row py-lg-5">
+          <div class="col-12 mx-auto">
+            <h1 class="text-white">Bookie</h1>
+            <div class="container-fluid">
+              <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div id="news" class="container">
+        <div id="error"></div>
+        <div class="row mt-4 mb-4">
+          <% for(var i=0; i < episodi.length; i++) { %>
+            <div class="col-md-4">
+              <div class="card">
+                <% if(session.user) { %>
+                  <i class="fas fa-star favorite_star" onclick="favorite_episode(<%= episodi[i].ID %>)"></i>
+                  <% } %>
+                    <div class="card-body border-gradient">
+                      <h5 class="card-title">
+                        <%= episodi[i].Titolo %>
+                      </h5>
+                      <p class="card-text">
+                        <%= episodi[i].Descrizione %>
+                      </p>
+                      <p class="text-muted">
+                        <%= tipo[i].Nome %>
+                      </p>
+                      <a href="/episode/<%= episodi[i].ID %>" class="btn">Leggi episodio</a>
+
+                    </div>
+              </div>
+            </div>
+            <% } %>
+        </div>
+      </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/functions.js"></script>
+    </body>
+
+    </html>

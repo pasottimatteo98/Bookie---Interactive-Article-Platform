@@ -1,0 +1,110 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main id="new_episode" class="container mt-4">
+      <div class="row">
+        <div class="col-12">
+          <h1>Modifica episodio <%= episode.Titolo %>
+          </h1>
+        </div>
+        <div id="message"></div>
+        <div class="mb-2">
+          <div class="mb-3">
+            <label for="titolo" class="form-label">Titolo</label>
+            <input type="type" class="form-control" id="titolo" value="<%= episode.Titolo %>">
+          </div>
+          <div class="mb-3">
+            <label for="descrizione" class="form-label">Descrizione</label>
+            <textarea class="form-control" id="descrizione" rows="3"><%= episode.Descrizione %></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="data" class="form-label">Data</label>
+            <input type="type" class="form-control" id="data" value="<%= episode.Data %>">
+          </div>
+          <div class="mb-3">
+            <label for="testo" class="form-label">Testo</label>
+            <textarea class="form-control" id="testo" rows="5"><%= episode.Testo %></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="sponsor" class="form-label">Sponsor</label>
+            <input type="type" class="form-control" id="sponsor" value="<%= episode.Sponsor %>">
+          </div>
+          <div class="mb-3">
+            <label for="articoli" class="form-label">Articolo</label>
+            <select class="form-select" id="articoli">
+              <% for( var i=0; i < articoli.length; i++) { %>
+                <option value="<%= articoli[i].ID %>">
+                  <%= articoli[i].Titolo %>
+                </option>
+                <% } %>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="tipo" class="form-label">Tipo</label>
+            <select class="form-select" id="tipo">
+              <% for( var i=0; i < tipo.length; i++) { %>
+                <option value="<%= tipo[i].ID %>">
+                  <%= tipo[i].Nome %>
+                </option>
+                <% } %>
+            </select>
+          </div>
+          <div id="price" class="mb-3 d-none">
+            <label for="Prezzo" class="form-label">Prezzo</label>
+            <input type="number" class="form-control " id="prezzo" value="<%= episode.Prezzo %>">
+          </div>
+          <div class="mb-3">
+            <button class="btn submit">Modifica</button>
+          </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#tipo").change(function () {
+          if ($("#tipo").val() == 2) {
+            $("#price").removeClass("d-none");
+          } else {
+            $("#price").addClass("d-none");
+          }
+        });
+        console.log($("#articoli").val());
+      });
+      $("#new_episode .submit").on("click", function () {
+        if ($("#tipo").val() == 2 && $("#prezzo").val() == 0) {
+          $("#message").html('<div class="alert alert-danger" role="alert">Un episodio a pagamento non può avere un prezzo pari a 0.</div>');
+          return;
+        }
+        axios.put('/episode/<%= episode.ID %>', {
+          title: $("#titolo").val(),
+          description: $("#descrizione").val(),
+          data: $("#data").val(),
+          text: $("#testo").val(),
+          sponsor: $("#sponsor").val(),
+          article: $("#articoli").val(),
+          type: $("#tipo").val(),
+          price: $("#prezzo").val()
+        })
+
+          .then(function (response) {
+            if (response.data.status == true) {
+              $("#message").html('<div class="alert alert-success" role="alert">Articolo modificato con successo!</div>');
+            }
+          })
+          .catch(function (error) {
+            if (error.response.status == 500) {
+              $("#message").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+            }
+          })
+      })
+    </script>
+    </body>
+
+    </html>

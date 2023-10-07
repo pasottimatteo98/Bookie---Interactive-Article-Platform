@@ -1,0 +1,67 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main class="container mt-4">
+      <div class="row">
+        <%- include('components/profile_sidebar.ejs'); %>
+          <div class="col-12 col-md-8">
+            <div class="row">
+              <div class="col-12">
+                <h1 class="text-start">I miei articoli</h1>
+              </div>
+              <div class="col-12 text-end">
+                <a href="/article/create" class="btn mt-2 mb-2">Crea articolo</a>
+              </div>
+              <div id="message"></div>
+              <% for(var i=0; i < articoli.length; i++) { %>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                    <img src="<%= articoli[i].Immagine %>" class="card-img-top" alt="<%= articoli[i].Titolo %>">
+                    <div class="card-body border-gradient">
+                      <h5 class="card-title">
+                        <%= articoli[i].Titolo %>
+                      </h5>
+                      <p class="card-text">
+                        <%= articoli[i].Descrizione %>
+                      </p>
+                      <a href="/article/<%= articoli[i].ID %>" class="btn">Vai all'articolo</a>
+                      <a href="/article/edit/<%= articoli[i].ID %>" class="btn">Modifica</a>
+                      <button onclick="delete_article(<%= articoli[i].ID %>)" class="btn">Elimina</button>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+            </div>
+          </div>
+      </div>
+
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      function delete_article(id) {
+        axios.delete('/article/' + id)
+          .then(function (response) {
+            if (response.data.status == true) {
+              $("#message").html('<div class="alert alert-success" role="alert">Articolo eliminato con successo!</div>');
+              setTimeout(function () {
+                window.location.reload(true);
+              }, 1000);
+            }
+          })
+          .catch(function (error) {
+            if (error.response.status == 500) {
+              $("#message").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+            }
+          })
+      }
+    </script>
+    </body>
+
+    </html>

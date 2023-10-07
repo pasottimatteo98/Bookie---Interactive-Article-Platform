@@ -1,0 +1,30 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main>
+      <div id="order_success" class="container">
+        <div id="error"></div>
+        <div class="row mt-4 mb-4">
+          <div class="col-12 text-center">
+            <i class="far fa-thumbs-up"></i>
+          </div>
+          <div class="col-12 text-center">
+            <h1>Pagamento ricevuto con successo!</h1>
+            <p>Il pagamento è stato effettuato con successo.</p>
+            <a href="/episode/<%= episode[0].ID %>" class="btn">Vai alla episodio.</a>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/functions.js"></script>
+    </body>
+
+    </html>

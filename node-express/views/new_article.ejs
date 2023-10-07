@@ -1,0 +1,68 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main id="new_article" class="container mt-4">
+      <div class="row">
+        <div class="col-12">
+          <h1>Crea nuovo Articolo</h1>
+        </div>
+        <div id="message"></div>
+        <div class="mb-2">
+          <div class="mb-3">
+            <label for="titolo" class="form-label">Titolo</label>
+            <input type="type" class="form-control" id="titolo">
+          </div>
+          <div class="mb-3">
+            <label for="descrizione" class="form-label">Descrizione</label>
+            <textarea class="form-control" id="descrizione" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="immagine" class="form-label">URL Immagine</label>
+            <input type="type" placeholder="https://example.com/immagine.jpg" pattern="https://.*" class="form-control"
+              id="immagine">
+          </div>
+          <div class="mb-3">
+            <label for="category" class="form-label">Categoria</label>
+            <select class="form-select" id="categoria">
+              <% for( var i=0; i < categorie.length; i++) { %>
+                <option value="<%= categorie[i].ID %>">
+                  <%= categorie[i].Nome %>
+                </option>
+                <% } %>
+            </select>
+          </div>
+          <button class="btn submit">Crea</button>
+        </div>
+      </div>
+    </main>
+    <footer class="footer mt-auto bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      $("#new_article .submit").on("click", function () {
+        axios.post('/article/store', {
+          title: $("#titolo").val(),
+          description: $("#descrizione").val(),
+          image: $("#immagine").val(),
+          category: $("#categoria").val()
+        })
+          .then(function (response) {
+            if (response.data.status == true) {
+              $("#message").html('<div class="alert alert-success" role="alert">Articolo creato con successo!</div>');
+            }
+          })
+          .catch(function (error) {
+            if (error.response.status == 500) {
+              $("#message").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+            }
+          })
+      })
+    </script>
+    </body>
+
+    </html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="it" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Matteo Pasotti">
+  <title>Bookie</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/signin.css" rel="stylesheet">
+</head>
+
+<body id="signin" class="text-center">
+  <main class="form-signin">
+    <div id="register">
+      <h1 class="h3 mb-3 fw-normal">Registrazione</h1>
+      <div id="error"></div>
+      <div class="form-floating">
+        <input type="text" class="form-control" id="Name" required>
+        <label for="nome">Nome</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control" id="Surname" required>
+        <label for="cognome">Cognome</label>
+      </div>
+      <div class="form-floating">
+        <input type="number" class="form-control" id="Telephone" required>
+        <label for="telephone">Numero cellulare</label>
+      </div>
+      <div class="form-floating">
+        <input type="email" class="form-control" id="Email" required>
+        <label for="Email">Email</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="Password" required>
+        <label for="Password">Password</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="Password2" required>
+        <label for="Password2">Conferma Password</label>
+      </div>
+      <div class="form-floating">
+        <input type="text" class="form-control" id="address" required>
+        <label for="address">Indirizzo</label>
+      </div>
+      <div class="form-floating">
+        <select id="province" class="form-control" required>
+          <% for(var i=0; i < provinces.length; i++) { %>
+            <option value="<%= provinces[i].ID %>">
+              <%= provinces[i].Provincia %>
+            </option>
+            <% } %>
+        </select>
+        <label for="province">Provincia</label>
+      </div>
+      <div class="form-floating">
+        <select id="city" class="form-control" required>
+          <% for(var i=0; i < cities.length; i++) { %>
+            <option value="<%= cities[i].ID %>">
+              <%= cities[i].Comune %>
+            </option>
+            <% } %>
+        </select>
+        <label for="city">Citt&aacute;</label>
+      </div>
+      <div class="form-floating">
+        <select id="cap" class="form-control" required>
+          <% for(var i=0; i < caps.length; i++) { %>
+            <option value="<%= caps[i].ID %>">
+              <%= caps[i].CAP %>
+            </option>
+            <% } %>
+        </select>
+        <label for="cap">Cap</label>
+      </div>
+      <div class="form-floating">
+        <select id="type" class="form-control" required>
+          <option value="1">Scrittore</option>
+          <option value="2">Lettore</option>
+        </select>
+        <label for="type">Che tipo di utente sei?</label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary mt-1 submit">Registrati</button>
+    </div>
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    $("#register .submit").on("click", function () {
+      let password = $("#Password").val();
+      let telephone = $("#Telephone").val();
+      let confirm_password = $("#Password2").val();
+
+      if (telephone.length != 10) {
+        $("#error").html('<div class="alert alert-danger" role="alert">Numero di Telefono non valido.</div>');
+        return;
+      }
+
+      if (password != confirm_password) {
+        $("#error").html('<div class="alert alert-danger" role="alert">Le password inserite non coincidono.</div>');
+        return;
+      }
+      axios.post('/register', {
+        name: $("#Name").val(),
+        surname: $("#Surname").val(),
+        telephone: $("#Telephone").val(),
+        email: $("#Email").val(),
+        password: $("#Password").val(),
+        level: $("#type").val(),
+        address: $("#address").val(),
+        province: $("#province").val(),
+        city: $("#city").val(),
+        cap: $("#cap").val()
+      })
+        .then(function (response) {
+          if (response.data.status == true) {
+            window.location.replace("/login");
+          }
+        })
+        .catch(function (error) {
+          if (error.response.status == 401) {
+            $("#error").html('<div class="alert alert-danger text-center" role="alert">' + error.response.data.error + '</div>');
+          }
+        })
+    })
+  </script>
+</body>
+
+</html>

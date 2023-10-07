@@ -1,0 +1,55 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main class="container mt-4">
+      <div class="row">
+        <%- include('components/profile_sidebar.ejs'); %>
+          <div class="col-12 col-md-8">
+            <div class="container">
+              <div class="row">
+                <% if(payments !=null) {%>
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Data</th>
+                        <th>Episodio</th>
+                        <th>Importo</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(var i=0; i < payments.length; i++) { %>
+                        <tr>
+                          <td>
+                            <%= i %>
+                          </td>
+                          <td>
+                            <%= payments[i].Data %>
+                          </td>
+                          <td>
+                            <%= payments[i].Titolo %>
+                          </td>
+                          <td>
+                            <%= payments[i].Importo %>&euro;
+                          </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                  </table>
+                  <% } else { %>
+                    <p class="text-center">Nessun pagamento effettuato</p>
+                    <% } %>
+              </div>
+            </div>
+          </div>
+      </div>
+
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+    </html>

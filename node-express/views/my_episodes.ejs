@@ -1,0 +1,69 @@
+<%- include('app/header.ejs'); %>
+  <%- include('app/navbar.ejs'); %>
+    <main class="container mt-4">
+      <div class="row">
+        <%- include('components/profile_sidebar.ejs'); %>
+          <div class="col-12 col-md-8">
+            <div class="row">
+              <div class="col-12">
+                <h1 class="text-start">I miei episodi</h1>
+              </div>
+              <div class="col-12 text-end">
+                <a href="/episode/create" class="btn mt-2 mb-2">Crea episodio</a>
+              </div>
+              <div id="message"></div>
+              <% for(var i=0; i < episodi.length; i++) { %>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                    <div class="card-body border-gradient">
+                      <h5 class="card-title">
+                        <%= episodi[i].Titolo %>
+                      </h5>
+                      <h6 class="card-title">
+                        <%= episodi[i].TitoloArticolo %>
+                      </h6>
+                      <p class="card-text">
+                        <%= episodi[i].Descrizione %>
+                      </p>
+                      <a href="/episode/<%= episodi[i].ID %>" class="btn">Leggi episodio</a>
+                      <a href="/episode/edit/<%= episodi[i].ID %>" class="btn">Modifica</a>
+                      <button onclick="delete_episode(<%= episodi[i].ID %>)" class="btn">Elimina</button>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+            </div>
+          </div>
+      </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Bookie.</span>
+      </div>
+    </footer>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      function delete_episode(id) {
+        axios.delete('/episode/' + id)
+          .then(function (response) {
+            if (response.data.status == true) {
+              $("#message").html('<div class="alert alert-success" role="alert">Episodio eliminato con successo!</div>');
+              setTimeout(function () {
+                window.location.reload(true);
+              }, 1000);
+            }
+          })
+          .catch(function (error) {
+            if (error.response.status == 500) {
+              $("#message").html('<div class="alert alert-danger" role="alert">' + error.response.data.error + '</div>');
+            }
+          })
+      }
+    </script>
+
+    </body>
+
+    </html>
